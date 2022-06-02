@@ -1,0 +1,45 @@
+/* Add contact form */
+
+.add-contacts {
+    text-align: left;
+    border: 2px dashed #A6CF98;
+    padding: 40px;
+    border-radius: 10px;
+    margin: 40px auto;
+    max-width: 60%;
+}
+
+.add-contacts__form {
+    display: flex;
+    flex-direction: column;
+}
+
+.add-contact__input-field {
+    margin-top: 10px;
+    min-height: 40px;
+    border-radius: 5px;
+    padding-left: 10px;
+    max-width: 50%;
+    border-color: #A6CF98;
+}
+
+.add-contact__input-label {
+    text-align: start;
+    margin-top: 10px;
+}
+
+.add-contact__cta {
+    margin-top: 20px;
+    margin-top: 20px;
+    min-height: 40px;
+    border-radius: 5px;
+    background-color: #A6CF98;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    max-width: 25%;
+}
+
+.add-contact__cta.-cancel {
+    margin-left: 10px;
+}
