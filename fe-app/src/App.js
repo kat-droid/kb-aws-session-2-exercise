@@ -11,22 +11,21 @@ import About from './components/about/About';
 import AddContact from './components/addContact/AddContact';
 import Favorites from './components/favorites/Favorites';
 import Detail from './components/detail/Detail';
+import NotFound from './components/notFound/NotFound';
 
 function App() {
 
   const handleClick = event => {
     let boxes = document.querySelectorAll('.js-nav-item');
     boxes.forEach(box => {
-      // ✅ Remove class from each element
       box.classList.remove('active');
     });
     event.currentTarget.querySelector('.js-nav-item').classList.add('active');
   };
 
-
   return (
     <Router>
-      <div className="App">
+      <div className="App -sticky-nav">
         <header className="App-header">
           <ul className="App-header__nav-list">
             <li className="App-header__nav-item" onClick={handleClick}>
@@ -57,6 +56,7 @@ function App() {
         <Route exact path="/favorites" element={<Favorites />}></Route>
         <Route exact path="/about" element={<About />}></Route>
         <Route exact path="/contact/:userId" element={<Detail />}></Route>
+        <Route path="/*" element={<NotFound />}></Route>
       </Routes>
 
       <div className="footer">

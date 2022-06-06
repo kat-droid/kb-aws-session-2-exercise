@@ -20,8 +20,8 @@ export default class Weather extends Component {
 
   render() {
     return (
-      <div>
-          <button className="button" onClick={this.handleButtonClick}>Get Weather in Manila</button>
+      <div className="weather">
+          <button className="weather__button" onClick={this.handleButtonClick}>Get Weather in Manila</button>
           <h1>The Weather in Manila is { this.state.weather }</h1>
       </div>
     )

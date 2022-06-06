@@ -1,3 +1,14 @@
+/* ==============================================================================
+Index
+----------------------------------------
+00 - contact-manager layout styles
+01 -
+02 -
+03 -
+04 -
+============================================================================== */
+
+/* 00 - contact-manager layout styles */
 .contact-manager {
     display: block;
     max-width: calc(100vw - 20%);
@@ -6,6 +17,7 @@
 
 .contact-manager__title {
     margin-top: 40px;
+    margin-bottom: 40px;
 }
 
 /* Contact list */
@@ -59,4 +71,15 @@
 
   .contacts__item-wrap.editing {
     background-color: red !important;
+  }
+
+  .contacts__actions-fav {
+    float: right;
+    border-color: navajowhite;
+    border-radius: 50%;
+  }
+
+  .contacts__actions-icon {
+    height: 30px;
+    width: 30px;
   }

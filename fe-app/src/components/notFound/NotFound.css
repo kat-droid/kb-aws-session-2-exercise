@@ -1,27 +1,21 @@
 /* ==============================================================================
 Index
 ----------------------------------------
-00 - about layout styles
+00 - not-found layout styles
 01 -
 02 -
 03 -
 04 -
 ============================================================================== */
 
-/* 00 - about layout styles */
-.about {
-    margin: 40px auto;
+/* 00 - not-found layout styles */
+.not-found {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+    height: calc(100vh - 200px);
 }
 
-.about__title {
-    margin-bottom: 40px;
-    font-size: 52px;
-}
-
-.about__subtitle {
-    
+.not-found__wrap {
+    text-align: center;
 }

@@ -1,4 +1,14 @@
-/* Add contact form */
+/* ==============================================================================
+Index
+----------------------------------------
+00 - add-contacts layout styles
+01 -
+02 -
+03 -
+04 -
+============================================================================== */
+
+/* 00 - add-contacts layout styles */
 
 .add-contacts {
     text-align: left;
@@ -6,40 +16,58 @@
     padding: 40px;
     border-radius: 10px;
     margin: 40px auto;
-    max-width: 60%;
+}
+
+.add-contacts__title {
+    margin-bottom: 40px;
 }
 
 .add-contacts__form {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
 }
 
 .add-contact__input-field {
-    margin-top: 10px;
-    min-height: 40px;
+    height: 40px;
     border-radius: 5px;
     padding-left: 10px;
     max-width: 50%;
     border-color: #A6CF98;
+    margin-right: 40px;
+    min-width: 220px;
 }
 
 .add-contact__input-label {
     text-align: start;
-    margin-top: 10px;
+    margin-right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    display: inline-flex;
 }
 
 .add-contact__cta {
-    margin-top: 20px;
-    margin-top: 20px;
-    min-height: 40px;
+    max-height: 40px;
     border-radius: 5px;
     background-color: #A6CF98;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    max-width: 25%;
+    min-width: 120px;
 }
 
 .add-contact__cta.-cancel {
     margin-left: 10px;
+}
+
+.add-contact__input-error {
+    display: block;
+    color: red;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.hide {
+    display: none;
 }

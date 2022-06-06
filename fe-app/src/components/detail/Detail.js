@@ -1,52 +1,69 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
 import './Detail.css'
+import profilePicture from './profile-picture.png';
+import Loading from '../loading/Loading';
+import axios from 'axios';
 
 export default class Detail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      frontend: {}
+      frontend: {},
+      isLoading: false,
     }
   }
 
   async componentDidMount() {
-    this.getFrontend();
+    this.getContactDetails();
   }
 
-  getFrontend() {
+  getContactDetails() {
     let url = window.location.href;
     let segment = url.split("/").pop();
-    let request = '/contact/' + segment;
+    let request = '/contacts/' + segment;
+    
+    // let serverlessAPIurl = 'https://9n0pi8hue4.execute-api.ap-southeast-1.amazonaws.com/dev-1/contacts/' + segment;
+    
 
-    fetch(request)
-      .then(response => response.json())
-      .then(data => {
+    this.setState({
+      isLoading: true,
+    })
+
+    axios.get(request)
+      .then(res => {
         this.setState({
-          frontend: data
+          frontend: res.data,
+          isLoading: false
         });
-      });
+      })
+      .catch(error => { 
+        console.log('error', error);
+      })
   }
 
   render() {
     const user = this.state.frontend;
+    const isLoading = this.state.isLoading;
+
     return (
       <div className="detail">
         <Link to='/' className="contact__actions-link"> <button type="button" className="btn btn-secondary">Back</button> </Link>
-        
         <h2 className="detail-title">Contact Details</h2>
+        {
+          isLoading ? (<Loading />) : (
+            <div className="detail-card card">
+              <div className="detail-card__thumb">
+                <img src={profilePicture} alt="profile" className="detail-card__img" />
+              </div>
 
-        <div className="detail-card card">
-          <div className="detail-card__thumb">
-            <img src="https://www.pngkey.com/png/full/115-1150152_default-profile-picture-avatar-png-green.png" alt="profile-picture" className="detail-card__img" />
-          </div>
-
-          <h1>{user.name}</h1>
-          <p className="detail-card__title">Phone: {user.phone}</p>
-          <p className="detail-card__title">Email: {user.email}</p>
-          <button className="detail-card__button">Add to Favorites</button>
-        </div>
-
+              <h1>{user.name}</h1>
+              <p className="detail-card__title">Phone: {user.phone}</p>
+              <p className="detail-card__title">Email: {user.email}</p>
+              <button className="detail-card__button">Add to Favorites</button>
+            </div>
+          )
+        }
       </div>
     )
   }

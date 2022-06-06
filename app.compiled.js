@@ -6,65 +6,86 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 var express = require('express');
 
-var request = require('request');
-
 var app = express();
-var port = process.env.HTTP_PORT || 4000;
+var port = process.env.HTTP_PORT || 4001;
+
+var mysql = require("mysql");
+
+var dotenv = require('dotenv');
+
+var bodyParser = require('body-parser');
+
+var jsonParser = bodyParser.json();
+dotenv.config();
 app.use(express["static"](_path["default"].join(__dirname, 'fe-app', 'build')));
+var db = mysql.createConnection({
+  host: process.env.HOST,
+  port: process.env.PORT,
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE
+});
+db.connect(function (err) {
+  if (err) {
+    console.log(err.message);
+    return;
+  }
+
+  console.log("Database connected");
+});
 app.get('/', function (req, res) {
   res.send('Hello World!');
-}); // get single user data
+});
+app.get('/test', function (req, res) {
+  res.send('test');
+}); // ADD new contact
 
-app.get('/contact/:userId', function (req, res) {
+app.post('/contact/add', jsonParser, function (req, res) {
+  var data = {
+    name: req.body.name,
+    phone: req.body.phone,
+    email: req.body.email
+  };
+  var sqlQuery = "INSERT INTO contacts SET ?";
+  var query = db.query(sqlQuery, data, function (err, results) {
+    if (err) throw err;
+    res.send(results);
+  });
+}); // UPDATE contact
+
+app.put('/contact/update/:userId', jsonParser, function (req, res) {
+  var contactItem = req.body;
+  var sql = "UPDATE contacts SET name = ?, phone = ?, email = ? WHERE id = ?";
+  db.query(sql, [contactItem.name, contactItem.phone, contactItem.email, contactItem.id], function (err, rows, fields) {
+    if (!err) res.send(rows);else console.log(err);
+  });
+}); // DELETE contact
+
+app["delete"]('/contact/delete/:userId', jsonParser, function (req, res) {
   var id = req.params.userId;
-  var url = 'https://jsonplaceholder.typicode.com/users/' + id;
-  request(url, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      res.send(body);
-    } else {
-      console.error('error:', error); // Print the error if one occurred
+  var sql = "DELETE FROM contacts WHERE id = ?";
+  db.query(sql, [id], function (error, results, fields) {
+    if (error) {
+      return console.error(error.message);
     }
+
+    res.send(results);
+    console.log('Deleted Row(s):', results.affectedRows);
   });
-}); // get list of users - web api (fake json)
+}); // GET single contact
 
-app.get('/contactlist', function (req, res) {
-  request('https://jsonplaceholder.typicode.com/users', function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      res.send(body);
-    } else {
-      console.error('error:', error); // Print the error if one occurred
-    }
+app.get('/contact/get/:userId', function (req, res) {
+  var id = req.params.userId;
+  var sqlQuery = "SELECT * FROM contacts WHERE id = ?";
+  db.query(sqlQuery, [id], function (err, rows, fields) {
+    if (!err) res.send(rows[0]);else console.log(err);
   });
-}); // app.post('/user', (req, res) => {
-//   res.send('Got a POST request')
-// })
-// app.put('/user', (req, res) => {
-//   res.send('Got a PUT request at /user')
-// })
-// app.delete('/user', (req, res) => {
-//   res.send('Got a DELETE request at /user')
-// })
-// get favorites
+}); // GET list of contacts
 
-app.get('/getFavorites', function (req, res) {
-  res.send('Get favorites');
-}); // get weather api 
-
-app.get('/getWeather', function (req, res) {
-  request('http://api.weatherstack.com/current?access_key=d9d2d269f4177500a98013d04f4206f4&query=Manila', function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      var parsedBody = JSON.parse(body);
-      var temp_c = parsedBody['current']['temperature'];
-      res.send({
-        temp_c: temp_c
-      });
-    } else {
-      console.error('error:', error); // Print the error if one occurred
-
-      console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-
-      console.log('body:', body); // Print the HTML for the Google homepage.
-    }
+app.get('/contact/get', function (req, res) {
+  var sqlQuery = "SELECT * FROM contacts";
+  db.query(sqlQuery, function (err, rows, fields) {
+    if (!err) res.send(rows);else console.log(err);
   });
 });
 app.listen(port, function () {
