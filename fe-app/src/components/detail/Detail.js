@@ -21,25 +21,27 @@ export default class Detail extends Component {
   getContactDetails() {
     let url = window.location.href;
     let segment = url.split("/").pop();
-    let request = '/contacts/' + segment;
-    
-    // let serverlessAPIurl = 'https://9n0pi8hue4.execute-api.ap-southeast-1.amazonaws.com/dev-1/contacts/' + segment;
-    
+    // let request = '/contacts/' + segment;
+    let serverlessAPIurl = 'https://9n0pi8hue4.execute-api.ap-southeast-1.amazonaws.com/dev-1/contacts/detail';
 
     this.setState({
       isLoading: true,
     })
-
-    axios.get(request)
-      .then(res => {
-        this.setState({
-          frontend: res.data,
-          isLoading: false
-        });
-      })
-      .catch(error => { 
-        console.log('error', error);
-      })
+    
+    axios.get(serverlessAPIurl, {
+      params: {
+        id: segment
+      },
+    })
+    .then(res => {
+      this.setState({
+        frontend: res.data.contactDetail,
+        isLoading: false
+      });
+    })
+    .catch(error => { 
+      console.log('error', error);
+    })
   }
 
   render() {

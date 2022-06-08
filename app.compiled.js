@@ -35,12 +35,9 @@ db.connect(function (err) {
 });
 app.get('/', function (req, res) {
   res.send('Hello World!');
-});
-app.get('/test', function (req, res) {
-  res.send('test');
 }); // ADD new contact
 
-app.post('/contact/add', jsonParser, function (req, res) {
+app.post('/contacts', jsonParser, function (req, res) {
   var data = {
     name: req.body.name,
     phone: req.body.phone,
@@ -53,7 +50,7 @@ app.post('/contact/add', jsonParser, function (req, res) {
   });
 }); // UPDATE contact
 
-app.put('/contact/update/:userId', jsonParser, function (req, res) {
+app.put('/contacts/:userId', jsonParser, function (req, res) {
   var contactItem = req.body;
   var sql = "UPDATE contacts SET name = ?, phone = ?, email = ? WHERE id = ?";
   db.query(sql, [contactItem.name, contactItem.phone, contactItem.email, contactItem.id], function (err, rows, fields) {
@@ -61,7 +58,7 @@ app.put('/contact/update/:userId', jsonParser, function (req, res) {
   });
 }); // DELETE contact
 
-app["delete"]('/contact/delete/:userId', jsonParser, function (req, res) {
+app["delete"]('/contacts/:userId', jsonParser, function (req, res) {
   var id = req.params.userId;
   var sql = "DELETE FROM contacts WHERE id = ?";
   db.query(sql, [id], function (error, results, fields) {
@@ -74,7 +71,7 @@ app["delete"]('/contact/delete/:userId', jsonParser, function (req, res) {
   });
 }); // GET single contact
 
-app.get('/contact/get/:userId', function (req, res) {
+app.get('/contacts/:userId', function (req, res) {
   var id = req.params.userId;
   var sqlQuery = "SELECT * FROM contacts WHERE id = ?";
   db.query(sqlQuery, [id], function (err, rows, fields) {
@@ -82,7 +79,7 @@ app.get('/contact/get/:userId', function (req, res) {
   });
 }); // GET list of contacts
 
-app.get('/contact/get', function (req, res) {
+app.get('/contacts', function (req, res) {
   var sqlQuery = "SELECT * FROM contacts";
   db.query(sqlQuery, function (err, rows, fields) {
     if (!err) res.send(rows);else console.log(err);

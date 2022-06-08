@@ -6,11 +6,8 @@ const mysql = require("mysql")
 const dotenv = require('dotenv')
 var bodyParser = require('body-parser')
 var jsonParser = bodyParser.json()
-const testDB = require("./db");
 
 dotenv.config()
-
-console.log(testDB.getDBConfig());
 
 app.use(express.static(path.join(__dirname, 'fe-app', 'build')));
 

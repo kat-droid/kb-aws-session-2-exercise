@@ -41,15 +41,16 @@ export default class ContactManager extends Component {
 
   handleAddContact = async (name, phone, email) => {
     const url = "/contacts";
+    const serverlessAPI = 'https://9n0pi8hue4.execute-api.ap-southeast-1.amazonaws.com/dev-1/contacts/insert';
     const req = {
       name,
       phone,
       email
     }
 
-    axios.post(url, req)
+    axios.post(serverlessAPI, req)
       .then(res => {
-        let id = res.data.insertId;
+        let id = res.data.id;
         let newContact = { name, phone, email, id };
         this.setState({
           contacts: [...this.state.contacts, newContact]
