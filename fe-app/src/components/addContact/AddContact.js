@@ -86,7 +86,7 @@ export default class AddContact extends Component {
     let formIsValid = true;
 
     // name
-    if(!this.validateName(fields["name"])) {
+    if(!this.customNameValidator(fields["name"])) {
       formIsValid = false;
       errors["name"] = "Invalid Name";
     }
@@ -117,6 +117,11 @@ export default class AddContact extends Component {
 
   validateName = (name) => {
     return (validator.isAlpha(name))
+  }
+
+  customNameValidator = (name) => {
+   var regEx = /^[a-zA-Z ]+$/;
+   return name.match(regEx);
   }
 
   render() {   
