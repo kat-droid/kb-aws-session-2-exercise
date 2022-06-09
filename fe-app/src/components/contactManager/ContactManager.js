@@ -114,9 +114,9 @@ export default class ContactManager extends Component {
     const serverlessAPIurl = 'https://9n0pi8hue4.execute-api.ap-southeast-1.amazonaws.com/dev-1/contacts/delete';
     const req = { id };
 
-    axios.delete(serverlessAPIurl, req, {
-      params: {
-        id: id
+    axios.delete(serverlessAPIurl, {
+      data: {
+        id: `${id}`,
       },
     })
       .then(res => {
