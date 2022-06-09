@@ -22,7 +22,7 @@ export default class ContactManager extends Component {
   }
 
   getContactList() {
-    let serverlessAPIurl = 'https://9n0pi8hue4.execute-api.ap-southeast-1.amazonaws.com/dev-1/contacts';
+    const serverlessAPIurl = 'https://9n0pi8hue4.execute-api.ap-southeast-1.amazonaws.com/dev-1/contacts';
     this.setState({
       isLoading: true
     });
@@ -41,14 +41,14 @@ export default class ContactManager extends Component {
 
   handleAddContact = async (name, phone, email) => {
     const url = "/contacts";
-    const serverlessAPI = 'https://9n0pi8hue4.execute-api.ap-southeast-1.amazonaws.com/dev-1/contacts/insert';
+    const serverlessAPIurl = 'https://9n0pi8hue4.execute-api.ap-southeast-1.amazonaws.com/dev-1/contacts/insert';
     const req = {
       name,
       phone,
       email
     }
 
-    axios.post(serverlessAPI, req)
+    axios.post(serverlessAPIurl, req)
       .then(res => {
         let id = res.data.id;
         let newContact = { name, phone, email, id };
@@ -75,6 +75,7 @@ export default class ContactManager extends Component {
   handleUpdateContact = async (name, phone, email, id) => {
     const users = this.state.contacts;
     const url = `/contacts/${id}`;
+    const serverlessAPIurl = 'https://9n0pi8hue4.execute-api.ap-southeast-1.amazonaws.com/dev-1/contacts/update';
     const req = {
       name,
       phone,
@@ -82,7 +83,11 @@ export default class ContactManager extends Component {
       id
     }
 
-    axios.put(url, req)
+    axios.put(serverlessAPIurl, req,  {
+      params: {
+        id: id
+      },
+    })
       .then(res => {
         let updatedUsers = users.map((user) => {
           if (user.id === id) {
@@ -106,9 +111,14 @@ export default class ContactManager extends Component {
   handleDeleteContact = async (id) => {
     let users = this.state.contacts;
     const url = `/contacts/${id}`;
+    const serverlessAPIurl = 'https://9n0pi8hue4.execute-api.ap-southeast-1.amazonaws.com/dev-1/contacts/delete';
     const req = { id };
 
-    axios.delete(url, req)
+    axios.delete(serverlessAPIurl, req, {
+      params: {
+        id: id
+      },
+    })
       .then(res => {
         let updatedUsers = users.filter((user) => user.id !== id);
         this.setState({

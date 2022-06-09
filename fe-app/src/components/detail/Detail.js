@@ -22,7 +22,7 @@ export default class Detail extends Component {
     let url = window.location.href;
     let segment = url.split("/").pop();
     // let request = '/contacts/' + segment;
-    let serverlessAPIurl = 'https://9n0pi8hue4.execute-api.ap-southeast-1.amazonaws.com/dev-1/contacts/detail';
+    const serverlessAPIurl = 'https://9n0pi8hue4.execute-api.ap-southeast-1.amazonaws.com/dev-1/contacts/detail';
 
     this.setState({
       isLoading: true,
