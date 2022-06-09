@@ -21,8 +21,8 @@ export default class Detail extends Component {
   getContactDetails() {
     let url = window.location.href;
     let segment = url.split("/").pop();
-    // let request = '/contacts/' + segment;
-    const serverlessAPIurl = 'https://9n0pi8hue4.execute-api.ap-southeast-1.amazonaws.com/dev-1/contacts/detail';
+    let request = '/contacts/' + segment; // request url for elastic beanstalk
+    const serverlessAPIurl = 'https://9n0pi8hue4.execute-api.ap-southeast-1.amazonaws.com/dev-1/contacts/detail'; // request url for serverless
 
     this.setState({
       isLoading: true,
@@ -35,7 +35,8 @@ export default class Detail extends Component {
     })
     .then(res => {
       this.setState({
-        frontend: res.data.contactDetail,
+        frontend: res.data.contactDetail, // frontend value for serverless
+        // frontend: res.data, // frontend value for elasticbeanstalk
         isLoading: false
       });
     })

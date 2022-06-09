@@ -22,7 +22,8 @@ export default class ContactManager extends Component {
   }
 
   getContactList() {
-    const serverlessAPIurl = 'https://9n0pi8hue4.execute-api.ap-southeast-1.amazonaws.com/dev-1/contacts';
+    const url = "/contacts"; // request url for elastic beanstalk
+    const serverlessAPIurl = 'https://9n0pi8hue4.execute-api.ap-southeast-1.amazonaws.com/dev-1/contacts'; // request url for serverless
     this.setState({
       isLoading: true
     });
@@ -40,8 +41,8 @@ export default class ContactManager extends Component {
   }
 
   handleAddContact = async (name, phone, email) => {
-    const url = "/contacts";
-    const serverlessAPIurl = 'https://9n0pi8hue4.execute-api.ap-southeast-1.amazonaws.com/dev-1/contacts/insert';
+    const url = "/contacts"; // request url for elasticbeanstalk
+    const serverlessAPIurl = 'https://9n0pi8hue4.execute-api.ap-southeast-1.amazonaws.com/dev-1/contacts/insert'; // request url for serverless
     const req = {
       name,
       phone,
@@ -50,8 +51,12 @@ export default class ContactManager extends Component {
 
     axios.post(serverlessAPIurl, req)
       .then(res => {
-        let id = res.data.id;
-        let newContact = { name, phone, email, id };
+        let id = res.data.id; // id response for serverless
+        let newContact = { name, phone, email, id }; // new contact for serverless
+
+        // let id = res.data.insertId; // id response for elastic beanstalk
+        // let newContact = { name, phone, email, id }; // new contact for elastic beanstalk
+
         this.setState({
           contacts: [...this.state.contacts, newContact]
         })
@@ -74,8 +79,8 @@ export default class ContactManager extends Component {
 
   handleUpdateContact = async (name, phone, email, id) => {
     const users = this.state.contacts;
-    const url = `/contacts/${id}`;
-    const serverlessAPIurl = 'https://9n0pi8hue4.execute-api.ap-southeast-1.amazonaws.com/dev-1/contacts/update';
+    const url = `/contacts/${id}`; // request url for elastic beanstalk
+    const serverlessAPIurl = 'https://9n0pi8hue4.execute-api.ap-southeast-1.amazonaws.com/dev-1/contacts/update'; // request url for serverless
     const req = {
       name,
       phone,
@@ -110,8 +115,8 @@ export default class ContactManager extends Component {
 
   handleDeleteContact = async (id) => {
     let users = this.state.contacts;
-    const url = `/contacts/${id}`;
-    const serverlessAPIurl = 'https://9n0pi8hue4.execute-api.ap-southeast-1.amazonaws.com/dev-1/contacts/delete';
+    const url = `/contacts/${id}`; // request url for elastic beanstalk
+    const serverlessAPIurl = 'https://9n0pi8hue4.execute-api.ap-southeast-1.amazonaws.com/dev-1/contacts/delete'; // request url for serverless
     const req = { id };
 
     axios.delete(serverlessAPIurl, {
