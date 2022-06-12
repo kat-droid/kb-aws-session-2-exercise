@@ -12,6 +12,8 @@ export default class ContactManager extends Component {
       contacts: [],
       userEdit: [],
       isLoading: false,
+      isEmpty: false,
+      getContactsErrorMsg: '',
     }
   }
 
@@ -30,10 +32,19 @@ export default class ContactManager extends Component {
 
     axios.get(serverlessAPIurl)
       .then(res => {
-        this.setState({
-          contacts: res.data,
-          isLoading: false
-        })
+        if (res.data.length > 0) {
+          this.setState({
+            contacts: res.data,
+            isLoading: false,
+            isEmpty: false,
+          })
+        } else {
+          this.setState({
+            isEmpty: true,
+            isLoading: false,
+            getContactsErrorMsg: ( res.data.errorMessage || 'No data found')
+          })
+        }
       })
       .catch(error => { 
         console.log('error', error);
@@ -144,6 +155,8 @@ export default class ContactManager extends Component {
   render() {
     const data = this.state.userEdit;
     const isLoading = this.state.isLoading;
+    const isEmpty = this.state.isEmpty;
+    const getContactsErrorMsg = this.state.getContactsErrorMsg;
 
     return (
       <div className="contact-manager">
@@ -154,35 +167,46 @@ export default class ContactManager extends Component {
         {
           isLoading ? (<Loading />) :
             (
-              <table id="customers" className="table">
-                <tbody>
-                  <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Phone Number</th>
-                    <th>Email</th>
-                    <th>Actions</th>
-                  </tr>
-
-                  {
-                    (this.state.contacts.map(user =>
-                      <tr className="contacts__item-wrap" key={user.id}>
-                        <td>{user.id}</td>
-                        <td>{user.name}</td>
-                        <td>{user.phone}</td>
-                        <td>{user.email}</td>
-                        <td>
-                          <Link to={`/contact/${user.id}`} className="contact__actions-link"> <button type="button" className="btn btn-primary contacts__actions-button">View</button> </Link>
-                          <button type="button" className="btn btn-secondary contacts__actions-button" onClick={(e) => this.handleEdit(user.name, user.phone, user.email, user.id, e)}>Update</button>
-                          {/* <Link to="/contact/favorites" className="contact__actions-link"> <button type="button" className="btn btn-success contacts__actions-button">Favorite</button> </Link> */}
-                          <button type="button" className="btn btn-danger contacts__actions-button" onClick={() => this.handleDeleteContact(user.id)}>Delete</button>
-                          {/* <button onClick={(e) => this.addToFavorites(user.name, e)} className="contacts__actions-fav"><img className="contacts__actions-icon" src={starIcon} /></button> */}
-                        </td>
+              <div>
+                {
+                  isEmpty ? 
+                    (<div className='contact-manager__error-wrap'>
+                      <p className='contact-manager__error-lbl'>Error: </p>
+                      <p className='contact-manager__error-msg'>{getContactsErrorMsg}</p> 
+                    </div>) : 
+                    (
+                    <table id="customers" className="table">
+                    <tbody>
+                      <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Phone Number</th>
+                        <th>Email</th>
+                        <th>Actions</th>
                       </tr>
-                    ))
-                  }
-                </tbody>
-              </table>
+    
+                      {
+                        (this.state.contacts.map(user =>
+                          <tr className="contacts__item-wrap" key={user.id}>
+                            <td>{user.id}</td>
+                            <td>{user.name}</td>
+                            <td>{user.phone}</td>
+                            <td>{user.email}</td>
+                            <td>
+                              <Link to={`/contact/${user.id}`} className="contact__actions-link"> <button type="button" className="btn btn-primary contacts__actions-button">View</button> </Link>
+                              <button type="button" className="btn btn-secondary contacts__actions-button" onClick={(e) => this.handleEdit(user.name, user.phone, user.email, user.id, e)}>Update</button>
+                              {/* <Link to="/contact/favorites" className="contact__actions-link"> <button type="button" className="btn btn-success contacts__actions-button">Favorite</button> </Link> */}
+                              <button type="button" className="btn btn-danger contacts__actions-button" onClick={() => this.handleDeleteContact(user.id)}>Delete</button>
+                              {/* <button onClick={(e) => this.addToFavorites(user.name, e)} className="contacts__actions-fav"><img className="contacts__actions-icon" src={starIcon} /></button> */}
+                            </td>
+                          </tr>
+                        ))
+                      }
+                    </tbody>
+                    </table>
+                    )
+                }
+              </div>
             )
         }
 

@@ -20,6 +20,15 @@ Index
     margin-bottom: 40px;
 }
 
+.contact-manager__error-wrap {
+  border: 2px solid red;
+  padding: 10px;
+}
+
+.contact-manager__error-lbl {
+  font-weight: 600;
+}
+
 /* Contact list */
 .contacts {
     text-align: left;
