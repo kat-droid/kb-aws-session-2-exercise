@@ -1,7 +1,7 @@
 import path from 'path'
 const express = require('express')
 const app = express()
-const port = process.env.HTTP_PORT || 4001
+const port = process.env.HTTP_PORT || 8080
 const mysql = require("mysql")
 const dotenv = require('dotenv')
 var bodyParser = require('body-parser')
